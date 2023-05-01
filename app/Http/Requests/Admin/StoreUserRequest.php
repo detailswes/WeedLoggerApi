@@ -27,7 +27,7 @@ class StoreUserRequest extends FormRequest
      */
     public function rules()
     {
-        dd($this->id);
+        // dd($this);
         $rules = [
             'full_name' => 'required',
             'email' => 'required|email|unique:users,email,' . $this->id,

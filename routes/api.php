@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\Admin\AuthController;
+use App\Http\Controllers\Api\Admin\ForgotPasswordController;
 use App\Http\Controllers\Api\Admin\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -31,6 +32,14 @@ Route::group([
     Route::post('/refresh', [AuthController::class, 'refresh']);
 });
 
+Route::controller(ForgotPasswordController::class)->group(function () {
+    // Route::get('forget-password', 'ResetPassword')->name('forget.password');
+    Route::post('forget/password/request', 'ResetPasswordRequest')->name('forget.password.request');
+    // Route::get('reset-password/{token}', 'ResetLoginPassword')->name('ResetPassword');
+    Route::post('update-password', 'changePassword')->name('change.password');
+  });
+
+Route::post('sending-queue-emails', [UserController::class,'sendTestEmails']);
 
 //USER ACCESS ALL ROUTES AFTER LOGGED IN
 Route::middleware(['auth:api'])->group(function () {

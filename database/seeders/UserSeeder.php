@@ -16,7 +16,7 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        $adminRoleId = Role::where('slug', 'super_admin')->first()->id;
+        $adminRoleId = Role::where('slug', 'super-admin')->first()->id;
 
         $adminUsers = [
             [
@@ -34,7 +34,6 @@ class UserSeeder extends Seeder
                 'full_name' => $adminUser['full_name'],
                 'role_id' => $adminRoleId,
                 'password' => bcrypt('Teamwebethics3!'),
-                'role_id' => $adminRoleId,
                 'email_verified_at' => now(),
                 'status' => 1
             ]);

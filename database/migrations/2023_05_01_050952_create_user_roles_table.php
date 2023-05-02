@@ -21,19 +21,11 @@ return new class extends Migration
 
     /**
      * Reverse the migrations.
+     *
+     * @return void
      */
-    public function down(): void
+    public function down()
     {
-        Schema::table('user_roles', function (Blueprint $table) {
-            $table->dropForeign(['user_id']);
-            $table->dropForeign(['role_id']);
-        });
-    
-       // drop the actual columns
-       Schema::table('user_roles', function (Blueprint $table) {
-            $table->dropColumn('user_id');
-            $table->dropColumn('role_id');
-    
-        });
+        Schema::dropIfExists('user_roles');
     }
 };

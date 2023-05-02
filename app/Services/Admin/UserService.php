@@ -31,39 +31,9 @@ class UserService
         if ($request->password) {
             $requestData['password'] =  bcrypt($request->password);
         }
-        // $emailJobs = new JobsWelcome();
         $data = User::updateOrCreate([
             'id' => $request->id
         ], $requestData);
-        if($data){
-            $template = EmailTemplate::where('slug', 'Welcome_&reset_password')->first();
-            $today = Carbon::now();
-    
-            $body = $template->description;
-            $subject = $template->subject;
-            $token = Str::random(64);
-            $tokenlink = $token;
-    
-            $logo = url('img/logo.jpeg');
-            $instagram = url('img/instagram.jpeg');
-            $linkedin = url('img/linkedin-logo.png');
-            $twitter = url('img/twitter.jpeg');
-            $list = [
-                '[Name]' => ucfirst($request->full_name),
-                '[Logo]' => $logo,
-                '[Year]' => $today->year,
-                '[Footer_Logo]' => $logo,
-                '[Subject]' => $subject,
-                '[instagram]' => $instagram,
-                '[linkedin]' => $linkedin,
-                '[twitter]' =>  $twitter,
-                '[Reset Password Link]' => url('api/reset-password/' . $tokenlink),
-            ];
-            $find = array_keys($list);
-            $replace = array_values($list);
-            $email_template = str_ireplace($find, $replace, $body);
-            Mail::to($data['email'])->send(new Welcome($email_template));
-        }
 
         if ($data) {
             $checkUserRole = UserRole::where('user_id', $data->id);
@@ -77,6 +47,7 @@ class UserService
                 UserRole::create($createUserRole);
                 return [
                     'success' => true,
+                    "message" => "User Register Successfully !!",
                     'user' => $data
                 ];
             } else {
@@ -87,12 +58,14 @@ class UserService
                 UserRole::create($createUserRole);
                 return [
                     'success' => true,
+                    "message" => "User Register Successfully !!",
                     'user' => $data
                 ];
             }
         }else{
             return [
                 'success' => false,
+                "message" => "Something Went Wrong !!!",
                 'user' => null
             ];
         }

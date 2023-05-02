@@ -8,10 +8,11 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use PHPOpenSourceSaver\JWTAuth\Contracts\JWTSubject;
 use Laravel\Sanctum\HasApiTokens;
+use App\Traits\HasPermissionsTrait;
 
 class User extends Authenticatable implements JWTSubject
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable, HasPermissionsTrait;
     const ADMIN = 'admin';
     /**
      * The attributes that are mass assignable.
@@ -47,6 +48,7 @@ class User extends Authenticatable implements JWTSubject
      * @var array<string, string>
      */
     protected $casts = [
+        'installations' => 'array',
         'email_verified_at' => 'datetime',
     ];
 
@@ -67,11 +69,21 @@ class User extends Authenticatable implements JWTSubject
      */
     public function getJWTCustomClaims()
     {
-        return [];
+        return [
+            'id' => $this->id,
+            'full_name' => $this->full_name,
+            'email' => $this->email,
+            'role_id' => $this->role_id,
+            'company_id' => $this->company_id,
+        ];
     }
 
     public function isAdmin(): bool
     {
         return  $this->role->slug === self::ADMIN;
+    }
+    public function role()
+    {
+        return $this->belongsTo(Role::class);
     }
 }

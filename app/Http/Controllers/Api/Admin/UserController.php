@@ -20,14 +20,19 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $req)
     {
-        $data = User::all();
+        // $payload = $this->getPayload($token);
+        dd($payload);
+        if(Auth::user()->can('user_listing')){
+            $data = User::all();
 
-        return response()->json([
-            'message'=> $data,
-            'success' => true,
-        ]);
+            return response()->json([
+                'message'=> $data,
+                'success' => true,
+            ]);
+        }
+        abort(403, 'You are not authorized.');
     }
 
     /**
@@ -35,52 +40,56 @@ class UserController extends Controller
      */
     public function store(StoreUserRequest $request)
     {
-        //
-        // Auth::user()->can('user_listing');
-        dd(Auth::user()->can('user_listing'));
-       $data = $this->userService->save($request);
-        if($data['success']){
-            $data['message'] = 'User Created Successfully!';
+
+        if(Auth::user()->can('user_create')){
+            $data = $this->userService->save($request);
+            if($data['success']){
+                $data['message'] = 'User Created Successfully!';
+                return response()->json($data);
+            }
             return response()->json($data);
         }
-        return response()->json($data);
+        abort(403, 'You are not authorized.');
+
     }
 
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    public function show(string $id)
     {
         // dd("here");
-        $user = User::find($id);
-        if(is_null($user)){
+        if(Auth::user()->can('user_edit')){
+            $user = User::find($id);
+            if(is_null($user)){
+                return response()->json([
+                    'success' => false,
+                    'message' => "User not found with this id",
+                    'user' => null
+                ]);
+            }
             return response()->json([
-                'success' => false,
-                'message' => "User not found with this id",
-                'user' => null
+                'success' => true,
+                'message' => 'User found',
+                'user' => $user
             ]);
         }
-        return response()->json([
-            'success' => true,
-            'message' => 'User found',
-            'user' => $user
-        ]);
+        abort(403, 'You are not authorized.');
     }
+
+
 
     /**
      * Update the specified resource in storage.
      */
     public function update(StoreUserRequest $request, string $id)
     {
-       
-        $data = $this->userService->save($request);
-        // dd($data);
-        if($data['success']){
-            $data['message'] = 'User updated Successfully!';
-            return response()->json($data);
+        if(Auth::user()->can('user_edit')){
+            $data = $this->userService->save($request);
+            if($data['success']){
+                $data['message'] = 'User updated Successfully!';
+                return response()->json($data,201);
+            }
+            return response()->json($data,422);
         }
-        return response()->json($data);
+        abort(403, 'You are not authorized.');
     }
 
     /**

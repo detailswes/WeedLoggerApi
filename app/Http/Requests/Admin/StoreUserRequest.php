@@ -27,16 +27,23 @@ class StoreUserRequest extends FormRequest
      */
     public function rules()
     {
-        // dd($this);
         $rules = [
             'full_name' => 'required',
             'email' => 'required|email|unique:users,email,' . $this->id,
-            'role_id' => 'required',
-        ];
+            'role_id' => 'required|exists:App\Models\Role,id',
+            'company_id' => 'required|exists:App\Models\Company,id',
+            'password' => [
+                'required',
+                'min:6',
+                'regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x])(?=.*[!$#%]).*$/'
+            ],
 
-        if (!$this->id) {
-            $rules['password'] = 'required';
-        }
+        ];
+        
+
+        // if (!$this->id) {
+        //     $rules['password'] = 'required';
+        // }
 
         return $rules;
     }

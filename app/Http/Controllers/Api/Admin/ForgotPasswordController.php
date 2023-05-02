@@ -64,7 +64,7 @@ class ForgotPasswordController extends Controller
         return response()->json([
             'success' => true,
             'message' => "Please check your email for password reset."
-        ]);
+        ],201);
     }
 
     /* show password update form  */
@@ -84,12 +84,12 @@ class ForgotPasswordController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => 'success', 'You have successfully changed your password'
-            ]);
+            ],201);
         }
 
         return response()->json([
             'success' => false,
             'message' => 'Invalid token'
-        ]);
+        ],422);
     }
 }

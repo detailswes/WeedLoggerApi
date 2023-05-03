@@ -1,0 +1,8 @@
+spec:
+  name: api
+  services:
+  - environment_slug: php
+    git:
+      branch: develop
+      repo_clone_url: https://github.com/WeedLogger/api.git
+    name: api

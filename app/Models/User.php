@@ -86,4 +86,10 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->belongsTo(Role::class);
     }
+
+    public function company()
+    {
+        return $this->belongsTo(Company::class)->select('id','name');
+    }
+
 }

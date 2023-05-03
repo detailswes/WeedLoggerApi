@@ -28,10 +28,10 @@ class StoreUserRequest extends FormRequest
     public function rules()
     {
         $rules = [
-            'full_name' => 'required',
+            'fullName' => 'required',
             'email' => 'required|email|unique:users,email,' . $this->id,
-            'role_id' => 'required|exists:App\Models\Role,id',
-            'company_id' => 'required|exists:App\Models\Company,id',
+            'roleId' => 'required|exists:App\Models\Role,id',
+            'companyId' => 'required|exists:App\Models\Company,id',
             'password' => [
                 'required',
                 'min:6',

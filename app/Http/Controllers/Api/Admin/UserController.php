@@ -23,12 +23,11 @@ class UserController extends Controller
     public function index(Request $req)
     {
         // $payload = $this->getPayload($token);
-        dd($payload);
+        // dd($payload);
         if(Auth::user()->can('user_listing')){
-            $data = User::all();
-
+            $data = User::with('company')->get();
             return response()->json([
-                'message'=> $data,
+                'data'=> $data,
                 'success' => true,
             ]);
         }
@@ -107,6 +106,5 @@ class UserController extends Controller
         Mail::to('dishanpreet.webethics@gmail.com')->send($email);
         $email = 'dishanpreet@gmail.com';
         Welcome::dispatch($email);
-
     }
 }

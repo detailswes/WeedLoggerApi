@@ -24,8 +24,8 @@ class UserService
         // dd(url('img/logo.png'));
         $requestData = [
             'email' => $request->email,
-            'full_name' => $request->full_name,
-            'role_id' => $request->role_id,
+            'full_name' => $request->fullName,
+            'role_id' => $request->roleId,
         ];
 
         if ($request->password) {
@@ -42,7 +42,7 @@ class UserService
                 $userRoleDelete = $checkUserRole->delete();
                 $createUserRole = [
                     'user_id' => $data->id,
-                    'role_id' => $request->role_id
+                    'role_id' => $request->roleId
                 ];
                 UserRole::create($createUserRole);
                 return [
@@ -53,7 +53,7 @@ class UserService
             } else {
                 $createUserRole = [
                     'user_id' => $data->id,
-                    'role_id' => $request->role_id
+                    'role_id' => $request->roleId
                 ];
                 UserRole::create($createUserRole);
                 return [

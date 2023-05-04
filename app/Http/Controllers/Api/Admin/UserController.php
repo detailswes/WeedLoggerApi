@@ -41,7 +41,7 @@ class UserController extends Controller
         // $payload = $this->getPayload($token);
         // dd($payload);
         if(Auth::user()->can('user_listing')){
-            $data = User::with('company','role')->get();
+            $data = User::with('company','role')->orderBy('id', 'DESC')->get();
             return response()->json([
                 'data'=> $data,
                 'success' => true,
@@ -52,7 +52,38 @@ class UserController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     */
+    */
+
+    /**
+        * @OA\Post(
+        *      path="/api/users",
+        *      operationId="Create User",
+        *      tags={"Users"},
+        *      summary="Create User",
+        *      description="Create single user Here",
+        *      @OA\RequestBody(
+        *         @OA\JsonContent(),
+        *         @OA\MediaType(
+        *            mediaType="multipart/form-data",
+        *            @OA\Schema(
+        *               type="object",
+        *               required={"fullName", "email", "password", "roleId", "companyId"},
+        *               @OA\Property(property="fullName", type="text"),
+        *               @OA\Property(property="email", type="email"),
+        *               @OA\Property(property="password", type="password"),
+        *               @OA\Property(property="roleId", type="number"),
+        *               @OA\Property(property="companyId", type="number"),
+        *            ),
+        *        ),
+        *      ),
+        *      security={{"bearer":{}}},
+        *      @OA\Response(response=200, description="User Created Successfully!"),
+        *      @OA\Response(response=401, description="Unauthenticated"),
+        *      @OA\Response(response=403, description="Forbidden"),
+        *      @OA\Response(response=400, description="Bad request"),
+        *      @OA\Response(response=404, description="Resource Not Found"),
+        *     )
+    */
     public function store(StoreUserRequest $request)
     {
 
@@ -68,6 +99,29 @@ class UserController extends Controller
 
     }
 
+    /**
+        * @OA\Get(
+        *      path="/api/users/{id}",
+        *      operationId="Single User",
+        *      tags={"Users"},
+        *      summary="Get Single User Using Id",
+        *      description="Get single user here using id",
+        *      @OA\Parameter(
+        *         name="id",
+        *         in="path",
+        *         description="Show user by id",
+        *         required=true,
+        *         @OA\Schema(
+        *               type="integer",
+        *         ),
+        *      ),
+        *      security={{"bearer":{}}},
+        *      @OA\Response(response=200, description="User Found"),
+        *      @OA\Response(response=401, description="Unauthenticated"),
+        *      @OA\Response(response=403, description="Forbidden"),
+        *      @OA\Response(response=400, description="Bad request"),
+        *     )
+    */
     public function show(string $id)
     {
         // dd("here");
@@ -94,9 +148,48 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
+
+    /**
+        * @OA\Put(
+        *      path="/api/users/{id}",
+        *      operationId="Update user By Id",
+        *      tags={"Users"},
+        *      summary="Update Users Data By Id",
+        *      description="Update users data here using id",
+        *      @OA\Parameter(
+        *         name="id",
+        *         in="path",
+        *         description="Update user by id",
+        *         required=true,
+        *         @OA\Schema(
+        *               type="integer",
+        *         ),
+        *      ),
+        *      @OA\RequestBody(
+        *         @OA\JsonContent(),
+        *         @OA\MediaType(
+        *            mediaType="multipart/form-data",
+        *            @OA\Schema(
+        *               type="object",
+        *               required={"fullName", "email", "password", "roleId", "companyId"},
+        *               @OA\Property(property="fullName", type="text"),
+        *               @OA\Property(property="email", type="email"),
+        *               @OA\Property(property="password", type="password"),
+        *               @OA\Property(property="roleId", type="number"),
+        *               @OA\Property(property="companyId", type="number"),
+        *            ),
+        *        ),
+        *      ),
+        *      security={{"bearer":{}}},
+        *      @OA\Response(response=200, description="User Updated Successfully"),
+        *      @OA\Response(response=403, description="You are not authorized."),
+        *      @OA\Response(response=422, description="Bad request"),
+        *     )
+    */
     public function update(StoreUserRequest $request, string $id)
     {
         if(Auth::user()->can('user_edit')){
+            $request->merge(['id'=>$id]);
             $data = $this->userService->save($request);
             if($data['success']){
                 $data['message'] = 'User updated Successfully!';
@@ -119,8 +212,8 @@ class UserController extends Controller
     {
         // dd('here');
         $email = new TestHelloEmail();
-        Mail::to('dishanpreet.webethics@gmail.com')->send($email);
-        $email = 'dishanpreet@gmail.com';
+        Mail::to('taranjeet.webethics@gmail.com')->send($email);
+        $email = 'taranjeet.webethics@gmail.com';
         Welcome::dispatch($email);
     }
 }

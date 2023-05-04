@@ -20,6 +20,30 @@ class ForgotPasswordController extends Controller
     /* check in password resets table that email exist or not */
     /* if email exists  ,delete that record first ,then create new record */
     /* then send reset password link through an email  */
+
+    /**
+        * @OA\Post(
+        *      path="/api/forget/password/request",
+        *      operationId="Forget Password Email",
+        *      tags={"Authentication"},
+        *      summary="Forget Password Email",
+        *      description="Enter your email here to get link to update password.",
+        *      @OA\RequestBody(
+        *         @OA\JsonContent(),
+        *         @OA\MediaType(
+        *            mediaType="multipart/form-data",
+        *            @OA\Schema(
+        *               type="object",
+        *               required={"email"},
+        *               @OA\Property(property="email", type="email"),
+        *            ),
+        *        ),
+        *      ),
+        *      security={{"bearer":{}}},
+        *      @OA\Response(response=201, description="Please check your email for password reset."),
+        *      @OA\Response(response=422, description="Bad request"),
+        *     )
+    */
     public function ResetPasswordRequest(ResetPasswordEmailRequest $request)
     {
         $user = User::where('email', $request->email)->first();
@@ -74,6 +98,31 @@ class ForgotPasswordController extends Controller
     // }
 
     /* update password using required validation for new password and confirm password */
+
+    /**
+        * @OA\Post(
+        *      path="/api/update-password",
+        *      operationId=".Update Password",
+        *      tags={"Authentication"},
+        *      summary="Update Password",
+        *      description="Enter your email and password here to update password.",
+        *      @OA\RequestBody(
+        *         @OA\JsonContent(),
+        *         @OA\MediaType(
+        *            mediaType="multipart/form-data",
+        *            @OA\Schema(
+        *               type="object",
+        *               required={"email", "password"},
+        *               @OA\Property(property="email", type="email"),
+        *               @OA\Property(property="password", type="password"),
+        *            ),
+        *        ),
+        *      ),
+        *      security={{"bearer":{}}},
+        *      @OA\Response(response=201, description="You have successfully changed your password"),
+        *      @OA\Response(response=422, description="Invalid token"),
+        *     )
+    */
     public function changePassword(UpdatePasswordRequest $request)
     {
         $user = DB::table('password_resets')->select('email')->where('token', $request->token)->first();

@@ -21,7 +21,6 @@ class UserService
 
     public function save(StoreUserRequest $request)
     {
-        // dd(url('img/logo.png'));
         $requestData = [
             'email' => $request->email,
             'full_name' => $request->fullName,
@@ -33,7 +32,7 @@ class UserService
             $requestData['password'] =  bcrypt($request->password);
         }
         $data = User::updateOrCreate([
-            'id' => $request->id
+            'id' => $request->id,
         ], $requestData);
 
         if ($data) {

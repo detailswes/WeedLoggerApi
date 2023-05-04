@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\Admin\CompanyController;
 use App\Http\Controllers\Api\Admin\ForgotPasswordController;
 use App\Http\Controllers\Api\Admin\RoleController;
 use App\Http\Controllers\Api\Admin\UserController;
+use App\Http\Controllers\Api\Admin\InstallationController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -48,5 +49,6 @@ Route::middleware(['auth:api'])->group(function () {
     Route::resource('users', UserController::class);
     Route::apiResource('companies', CompanyController::class);
     Route::apiResource('roles', RoleController::class);
-    Route::get('/user-profile', [AuthController::class, 'userProfile']);   
+    Route::get('/user-profile', [AuthController::class, 'userProfile']);
+    Route::apiResource('installations', InstallationController::class);
 });

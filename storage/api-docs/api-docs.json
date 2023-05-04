@@ -132,7 +132,7 @@
                 "operationId": "Auth Logout",
                 "responses": {
                     "200": {
-                        "description": "User successfully signed out"
+                        "description": "User Successfully Logined"
                     },
                     "401": {
                         "description": "Unauthenticated"
@@ -145,6 +145,660 @@
                     },
                     "404": {
                         "description": "Resource Not Found"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
+        "/api/companies": {
+            "get": {
+                "tags": [
+                    "Company"
+                ],
+                "summary": "List of all companies",
+                "description": "Get list of all companies here",
+                "operationId": "List of all companies",
+                "responses": {
+                    "200": {
+                        "description": "All Companies"
+                    },
+                    "403": {
+                        "description": "You are not authorized."
+                    },
+                    "422": {
+                        "description": "Bad request"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Company"
+                ],
+                "summary": "Add New Company Name",
+                "description": "Add new company name here",
+                "operationId": "Add Company",
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "name"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "text"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        },
+                        "application/json": {
+                            "schema": {}
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Company Register Successfully !!"
+                    },
+                    "403": {
+                        "description": "You are not authorized."
+                    },
+                    "422": {
+                        "description": "Bad request"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
+        "/api/companies/{id}": {
+            "get": {
+                "tags": [
+                    "Company"
+                ],
+                "summary": "Show Company By Id",
+                "description": "Show company by id",
+                "operationId": "Show Company By Id",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Show company by id",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Company Updated Successfully"
+                    },
+                    "403": {
+                        "description": "You are not authorized."
+                    },
+                    "422": {
+                        "description": "Bad request"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Company"
+                ],
+                "summary": "Update Company Name By Id",
+                "description": "Update company name here using id",
+                "operationId": "Update Company By Id",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Update company name by id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "name"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        },
+                        "application/json": {
+                            "schema": {}
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Company Updated Successfully"
+                    },
+                    "403": {
+                        "description": "You are not authorized."
+                    },
+                    "422": {
+                        "description": "Bad request"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
+        "/api/forget/password/request": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Forget Password Email",
+                "description": "Enter your email here to get link to update password.",
+                "operationId": "Forget Password Email",
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "email"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "email"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        },
+                        "application/json": {
+                            "schema": {}
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Please check your email for password reset."
+                    },
+                    "422": {
+                        "description": "Bad request"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
+        "/api/update-password": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Update Password",
+                "description": "Enter your email and password here to update password.",
+                "operationId": ".Update Password",
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "email"
+                                    },
+                                    "password": {
+                                        "type": "password"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        },
+                        "application/json": {
+                            "schema": {}
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "You have successfully changed your password"
+                    },
+                    "422": {
+                        "description": "Invalid token"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
+        "/api/installations": {
+            "get": {
+                "tags": [
+                    "Installation"
+                ],
+                "summary": "List of all Installations",
+                "description": "Get list of all Installations here",
+                "operationId": "List of all Installations",
+                "responses": {
+                    "200": {
+                        "description": "All Installations"
+                    },
+                    "403": {
+                        "description": "You are not authorized."
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Installation"
+                ],
+                "summary": "Add New Installation",
+                "description": "Add new installation here",
+                "operationId": "Add installations",
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "companyId"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "text"
+                                    },
+                                    "companyId": {
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        },
+                        "application/json": {
+                            "schema": {}
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Installation Register Successfully !!"
+                    },
+                    "403": {
+                        "description": "You are not authorized."
+                    },
+                    "422": {
+                        "description": "Bad request"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
+        "/api/installations/{id}": {
+            "get": {
+                "tags": [
+                    "Installation"
+                ],
+                "summary": "Show Installation By Id",
+                "description": "Show installation by id",
+                "operationId": "Show Installations By Id",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Show Installations by id",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Installations  show successfully with this id."
+                    },
+                    "403": {
+                        "description": "You are not authorized."
+                    },
+                    "422": {
+                        "description": "Bad request"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Installation"
+                ],
+                "summary": "Update Installation By Id",
+                "description": "Update installation here using id",
+                "operationId": "Update Installation By Id",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Update installation by id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "companyId"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "text"
+                                    },
+                                    "companyId": {
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        },
+                        "application/json": {
+                            "schema": {}
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Installation Updated Successfully"
+                    },
+                    "403": {
+                        "description": "You are not authorized."
+                    },
+                    "422": {
+                        "description": "Bad request"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
+        "/api/roles": {
+            "get": {
+                "tags": [
+                    "Roles"
+                ],
+                "summary": "All Roles Listing",
+                "description": "All roles Listing Here",
+                "operationId": "Roles Listing",
+                "responses": {
+                    "200": {
+                        "description": "All Roles List !!"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
+        "/api/users": {
+            "get": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "All Users Listing",
+                "description": "All Users Listing Here",
+                "operationId": "Users Listing",
+                "responses": {
+                    "200": {
+                        "description": "User Listing"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Create User",
+                "description": "Create single user Here",
+                "operationId": "Create User",
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "fullName",
+                                    "email",
+                                    "password",
+                                    "roleId",
+                                    "companyId"
+                                ],
+                                "properties": {
+                                    "fullName": {
+                                        "type": "text"
+                                    },
+                                    "email": {
+                                        "type": "email"
+                                    },
+                                    "password": {
+                                        "type": "password"
+                                    },
+                                    "roleId": {
+                                        "type": "number"
+                                    },
+                                    "companyId": {
+                                        "type": "number"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        },
+                        "application/json": {
+                            "schema": {}
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "User Created Successfully!"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
+        "/api/users/{id}": {
+            "get": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Get Single User Using Id",
+                "description": "Get single user here using id",
+                "operationId": "Single User",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Show user by id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User Found"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Update Users Data By Id",
+                "description": "Update users data here using id",
+                "operationId": "Update user By Id",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Update user by id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "fullName",
+                                    "email",
+                                    "password",
+                                    "roleId",
+                                    "companyId"
+                                ],
+                                "properties": {
+                                    "fullName": {
+                                        "type": "text"
+                                    },
+                                    "email": {
+                                        "type": "email"
+                                    },
+                                    "password": {
+                                        "type": "password"
+                                    },
+                                    "roleId": {
+                                        "type": "number"
+                                    },
+                                    "companyId": {
+                                        "type": "number"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        },
+                        "application/json": {
+                            "schema": {}
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "User Updated Successfully"
+                    },
+                    "403": {
+                        "description": "You are not authorized."
+                    },
+                    "422": {
+                        "description": "Bad request"
                     }
                 },
                 "security": [

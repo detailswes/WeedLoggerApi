@@ -76,7 +76,7 @@ class ForgotPasswordController extends Controller
                 '[instagram]' => $instagram,
                 '[linkedin]' => $linkedin,
                 '[twitter]' =>  $twitter,
-                '[Reset Password Link]' => url('api/reset-password/' . $tokenlink),
+                '[Reset Password Link]' => (env('REACT_URL'). $tokenlink),
             ];
 
             $find = array_keys($list);
@@ -128,7 +128,7 @@ class ForgotPasswordController extends Controller
         $user = DB::table('password_resets')->select('email')->where('token', $request->token)->first();
         if ($user) {
             User::where("email", $user->email)->update([
-                'password' => bcrypt($request->new_password),
+                'password' => bcrypt($request->newPassword),
             ]);
             return response()->json([
                 'success' => true,

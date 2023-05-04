@@ -124,7 +124,7 @@ class AuthController extends Controller
         *      summary="User Logout",
         *      description="User Logout Here",
         *      security={{"bearer":{}}},
-        *      @OA\Response(response=200, description="User successfully signed out"),
+        *      @OA\Response(response=200, description="User Successfully Logined"),
         *      @OA\Response(response=401, description="Unauthenticated"),
         *      @OA\Response(response=403, description="Forbidden"),
         *      @OA\Response(response=400, description="Bad request"),
@@ -139,7 +139,8 @@ class AuthController extends Controller
      * Refresh a token.
      *
      * @return \Illuminate\Http\JsonResponse
-     */
+    */
+
     public function refresh() {
         return $this->createNewToken(auth()->refresh());
     }

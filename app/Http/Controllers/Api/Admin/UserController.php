@@ -19,13 +19,29 @@ class UserController extends Controller
     }
     /**
      * Display a listing of the resource.
-     */
+    */
+
+    /**
+        * @OA\Get(
+        *      path="/api/users",
+        *      operationId="Users Listing",
+        *      tags={"Users"},
+        *      summary="All Users Listing",
+        *      description="All Users Listing Here",
+        *      security={{"bearer":{}}},
+        *      @OA\Response(response=200, description="User Listing"),
+        *      @OA\Response(response=401, description="Unauthenticated"),
+        *      @OA\Response(response=403, description="Forbidden"),
+        *      @OA\Response(response=400, description="Bad request"),
+        *      @OA\Response(response=404, description="Resource Not Found"),
+        *     )
+    */
     public function index(Request $req)
     {
         // $payload = $this->getPayload($token);
         // dd($payload);
         if(Auth::user()->can('user_listing')){
-            $data = User::with('company')->get();
+            $data = User::with('company','role')->get();
             return response()->json([
                 'data'=> $data,
                 'success' => true,
@@ -56,7 +72,7 @@ class UserController extends Controller
     {
         // dd("here");
         if(Auth::user()->can('user_edit')){
-            $user = User::find($id);
+            $user = User::with('company','role')->find($id);
             if(is_null($user)){
                 return response()->json([
                     'success' => false,

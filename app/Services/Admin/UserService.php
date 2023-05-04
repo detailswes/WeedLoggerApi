@@ -26,6 +26,7 @@ class UserService
             'email' => $request->email,
             'full_name' => $request->fullName,
             'role_id' => $request->roleId,
+            'company_id' => $request->companyId,
         ];
 
         if ($request->password) {

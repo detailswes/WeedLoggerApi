@@ -20,6 +20,6 @@ ADD ./user.ini /usr/local/etc/php/conf.d/user.ini
 # WORKDIR /var/www/
 # COPY composer.* ./var/www/
 
-# RUN composer install
+RUN composer install
 
 EXPOSE 8000

@@ -21,18 +21,17 @@ class CompanyController extends Controller
         *      summary="List of all companies",
         *      description="Get list of all companies here",
         *      security={{"bearer":{}}},
-        *      @OA\Response(response=200, description="All Companies"),
+        *      @OA\Response(response=200, description="List of all companies retrieved successfully."),
         *      @OA\Response(response=403, description="You are not authorized."),
-        *      @OA\Response(response=422, description="Bad request"),
         *     )
     */
     public function index()
     {
         if(Auth::user()->can('company_listing')){
-           $companies = Company::all();
+           $companies = Company::orderBy('id','DESC')->get();
             return response()->json([
                 'success' => true,
-                'message' => "All Companies",
+                'message' => "List of all companies retrieved successfully.",
                 'data' => $companies,
             ]);
         }
@@ -57,14 +56,13 @@ class CompanyController extends Controller
         *            @OA\Schema(
         *               type="object",
         *               required={"name"},
-        *               @OA\Property(property="name", type="text"),
+        *               @OA\Property(property="name", type="string"),
         *            ),
         *        ),
         *      ),
         *      security={{"bearer":{}}},
         *      @OA\Response(response=200, description="Company Register Successfully !!"),
         *      @OA\Response(response=403, description="You are not authorized."),
-        *      @OA\Response(response=422, description="Bad request"),
         *     )
     */
     public function store(Request $request)
@@ -104,9 +102,8 @@ class CompanyController extends Controller
         *         required=true,
         *      ),
         *      security={{"bearer":{}}},
-        *      @OA\Response(response=200, description="Company Updated Successfully"),
+        *      @OA\Response(response=200, description="Company details retrieved successfully."),
         *      @OA\Response(response=403, description="You are not authorized."),
-        *      @OA\Response(response=422, description="Bad request"),
         *     )
     */
     public function show(string $id)
@@ -115,7 +112,7 @@ class CompanyController extends Controller
             $data = Company::findOrFail($id);
             return response()->json([
                 'success' => true,
-                'message' => 'Company show successfully with this id.',
+                'message' => 'Company details retrieved successfully.',
                 'data' => $data,
             ]);
         }
@@ -129,34 +126,34 @@ class CompanyController extends Controller
     /**
         * @OA\Put(
         *      path="/api/companies/{id}",
-        *      operationId="Update Company By Id",
+        *      operationId="updateCompany",
         *      tags={"Company"},
-        *      summary="Update Company Name By Id",
-        *      description="Update company name here using id",
+        *      summary="Update a company's details by ID",
+        *      description="Update a company's details by ID",
         *      @OA\Parameter(
         *         name="id",
         *         in="path",
-        *         description="Update company name by id",
+        *         description="ID of the company to update",
         *         required=true,
         *         @OA\Schema(
         *               type="integer",
         *         ),
         *      ),
         *      @OA\RequestBody(
-        *         @OA\JsonContent(),
         *         @OA\MediaType(
-        *            mediaType="multipart/form-data",
-        *            @OA\Schema(
-        *               type="object",
-        *               required={"name"},
-        *               @OA\Property(property="name", type="string"),
-        *            ),
-        *        ),
+        *             mediaType="application/json",
+        *             @OA\Schema(
+        *                 @OA\Property(
+        *                     property="name",
+        *                     type="string"
+        *                 ),
+        *             required={"name"}
+        *             )
+        *         )
         *      ),
         *      security={{"bearer":{}}},
         *      @OA\Response(response=200, description="Company Updated Successfully"),
         *      @OA\Response(response=403, description="You are not authorized."),
-        *      @OA\Response(response=422, description="Bad request"),
         *     )
     */
     public function update(Request $request, string $id)

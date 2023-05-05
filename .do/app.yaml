@@ -1,8 +1,8 @@
-name: api
+name: WeedLoggerApi
 services:
 - environment_slug: php
   github:
-    branch: develop
+    branch: main
     deploy_on_push: true
-    repo: WeedLogger/api
-  name: api
+    repo: detailswes/WeedLoggerApi
+  name: WeedLoggerApi

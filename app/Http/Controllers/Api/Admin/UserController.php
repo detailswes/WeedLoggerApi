@@ -29,11 +29,8 @@ class UserController extends Controller
         *      summary="All Users Listing",
         *      description="All Users Listing Here",
         *      security={{"bearer":{}}},
-        *      @OA\Response(response=200, description="User Listing"),
-        *      @OA\Response(response=401, description="Unauthenticated"),
-        *      @OA\Response(response=403, description="Forbidden"),
-        *      @OA\Response(response=400, description="Bad request"),
-        *      @OA\Response(response=404, description="Resource Not Found"),
+        *      @OA\Response(response=200, description="List of all users retrieved successfully."),
+        *      @OA\Response(response=403, description="You are not authorized."),
         *     )
     */
     public function index(Request $req)
@@ -68,20 +65,17 @@ class UserController extends Controller
         *            @OA\Schema(
         *               type="object",
         *               required={"fullName", "email", "password", "roleId", "companyId"},
-        *               @OA\Property(property="fullName", type="text"),
-        *               @OA\Property(property="email", type="email"),
-        *               @OA\Property(property="password", type="password"),
-        *               @OA\Property(property="roleId", type="number"),
-        *               @OA\Property(property="companyId", type="number"),
+        *               @OA\Property(property="fullName", type="string"),
+        *               @OA\Property(property="email", type="string", format="email"),
+        *               @OA\Property(property="password", type="string", writeOnly=true),
+        *               @OA\Property(property="roleId", type="integer"),
+        *               @OA\Property(property="companyId", type="integer"),
         *            ),
         *        ),
         *      ),
         *      security={{"bearer":{}}},
         *      @OA\Response(response=200, description="User Created Successfully!"),
-        *      @OA\Response(response=401, description="Unauthenticated"),
-        *      @OA\Response(response=403, description="Forbidden"),
-        *      @OA\Response(response=400, description="Bad request"),
-        *      @OA\Response(response=404, description="Resource Not Found"),
+        *      @OA\Response(response=403, description="You are not authorized."),
         *     )
     */
     public function store(StoreUserRequest $request)
@@ -116,10 +110,8 @@ class UserController extends Controller
         *         ),
         *      ),
         *      security={{"bearer":{}}},
-        *      @OA\Response(response=200, description="User Found"),
-        *      @OA\Response(response=401, description="Unauthenticated"),
-        *      @OA\Response(response=403, description="Forbidden"),
-        *      @OA\Response(response=400, description="Bad request"),
+        *      @OA\Response(response=200, description="User found successfully."),
+        *      @OA\Response(response=403, description="You are not authorized."),
         *     )
     */
     public function show(string $id)
@@ -152,38 +144,36 @@ class UserController extends Controller
     /**
         * @OA\Put(
         *      path="/api/users/{id}",
-        *      operationId="Update user By Id",
+        *      operationId="UpdateUser",
         *      tags={"Users"},
-        *      summary="Update Users Data By Id",
-        *      description="Update users data here using id",
+        *      summary="Update a user's details by ID",
+        *      description="Update a user's details by ID",
         *      @OA\Parameter(
         *         name="id",
         *         in="path",
-        *         description="Update user by id",
+        *         description="ID of the company to update",
         *         required=true,
         *         @OA\Schema(
         *               type="integer",
         *         ),
         *      ),
         *      @OA\RequestBody(
-        *         @OA\JsonContent(),
         *         @OA\MediaType(
-        *            mediaType="multipart/form-data",
+        *            mediaType="application/json",
         *            @OA\Schema(
         *               type="object",
         *               required={"fullName", "email", "password", "roleId", "companyId"},
-        *               @OA\Property(property="fullName", type="text"),
-        *               @OA\Property(property="email", type="email"),
-        *               @OA\Property(property="password", type="password"),
-        *               @OA\Property(property="roleId", type="number"),
-        *               @OA\Property(property="companyId", type="number"),
+        *               @OA\Property(property="fullName", type="string"),
+        *               @OA\Property(property="email", type="string", format="email"),
+        *               @OA\Property(property="password", type="string", writeOnly=true),
+        *               @OA\Property(property="roleId", type="integer"),
+        *               @OA\Property(property="companyId", type="integer"),
         *            ),
         *        ),
         *      ),
         *      security={{"bearer":{}}},
-        *      @OA\Response(response=200, description="User Updated Successfully"),
+        *      @OA\Response(response=200, description="User updated successfully"),
         *      @OA\Response(response=403, description="You are not authorized."),
-        *      @OA\Response(response=422, description="Bad request"),
         *     )
     */
     public function update(StoreUserRequest $request, string $id)
@@ -192,7 +182,7 @@ class UserController extends Controller
             $request->merge(['id'=>$id]);
             $data = $this->userService->save($request);
             if($data['success']){
-                $data['message'] = 'User updated Successfully!';
+                $data['message'] = 'User updated successfully!';
                 return response()->json($data,201);
             }
             return response()->json($data,422);

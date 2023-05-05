@@ -27,7 +27,7 @@ class AuthController extends Controller
     /**
         * @OA\Post(
         *      path="/api/auth/login",
-        *      operationId="Auth Login",
+        *      operationId="authLogin",
         *      tags={"Authentication"},
         *      summary="User Login",
         *      description="User Login Here",
@@ -38,8 +38,8 @@ class AuthController extends Controller
         *            @OA\Schema(
         *               type="object",
         *               required={"email", "password"},
-        *               @OA\Property(property="email", type="email"),
-        *               @OA\Property(property="password", type="password"),
+        *               @OA\Property(property="email", type="string", format="email"),
+        *               @OA\Property(property="password", type="string", writeOnly=true),
         *            ),
         *        ),
         *      ),
@@ -67,7 +67,7 @@ class AuthController extends Controller
     /**
         * @OA\Post(
         *      path="/api/auth/register",
-        *      operationId="Auth Registeration",
+        *      operationId="authRegisteration",
         *      tags={"Authentication"},
         *      summary="User Registeration",
         *      description="User Registeration Here",
@@ -78,11 +78,11 @@ class AuthController extends Controller
         *            @OA\Schema(
         *               type="object",
         *               required={"fullName", "email", "password", "roleId", "companyId"},
-        *               @OA\Property(property="fullName", type="text"),
-        *               @OA\Property(property="email", type="email"),
-        *               @OA\Property(property="password", type="password"),
-        *               @OA\Property(property="roleId", type="number"),
-        *               @OA\Property(property="companyId", type="number"),
+        *               @OA\Property(property="fullName", type="string"),
+        *               @OA\Property(property="email", type="string", format="email"),
+        *               @OA\Property(property="password", type="string", writeOnly=true),
+        *               @OA\Property(property="roleId", type="integer"),
+        *               @OA\Property(property="companyId", type="integer"),
         *            ),
         *        ),
         *      ),
@@ -119,12 +119,12 @@ class AuthController extends Controller
     /**
         * @OA\Post(
         *      path="/api/auth/logout",
-        *      operationId="Auth Logout",
+        *      operationId="authLogout",
         *      tags={"Authentication"},
         *      summary="User Logout",
         *      description="User Logout Here",
         *      security={{"bearer":{}}},
-        *      @OA\Response(response=200, description="User Successfully Logined"),
+        *      @OA\Response(response=200, description="User successfully signed out"),
         *      @OA\Response(response=401, description="Unauthenticated"),
         *      @OA\Response(response=403, description="Forbidden"),
         *      @OA\Response(response=400, description="Bad request"),

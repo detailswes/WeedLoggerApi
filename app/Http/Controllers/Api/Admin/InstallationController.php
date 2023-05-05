@@ -21,17 +21,17 @@ class InstallationController extends Controller
         *      summary="List of all Installations",
         *      description="Get list of all Installations here",
         *      security={{"bearer":{}}},
-        *      @OA\Response(response=200, description="All Installations"),
+        *      @OA\Response(response=200, description="List of all Installations retrieved successfully."),
         *      @OA\Response(response=403, description="You are not authorized."),
         *     )
     */
     public function index()
     {
         if(Auth::user()->can('installation_listing')){
-            $installation = Installation::all();
+            $installation = Installation::with('company')->orderBy('id','DESC')->get();
              return response()->json([
                  'success' => true,
-                 'message' => "All Installation",
+                 'message' => "List of all Installations retrieved successfully.",
                  'data' => $installation,
              ]);
          }
@@ -56,7 +56,7 @@ class InstallationController extends Controller
         *            @OA\Schema(
         *               type="object",
         *               required={"name", "companyId"},
-        *               @OA\Property(property="name", type="text"),
+        *               @OA\Property(property="name", type="string"),
         *               @OA\Property(property="companyId", type="integer"),
         *            ),
         *        ),
@@ -64,7 +64,6 @@ class InstallationController extends Controller
         *      security={{"bearer":{}}},
         *      @OA\Response(response=200, description="Installation Register Successfully !!"),
         *      @OA\Response(response=403, description="You are not authorized."),
-        *      @OA\Response(response=422, description="Bad request"),
         *     )
     */
     public function store(Request $request)
@@ -105,9 +104,8 @@ class InstallationController extends Controller
         *         required=true,
         *      ),
         *      security={{"bearer":{}}},
-        *      @OA\Response(response=200, description="Installations  show successfully with this id."),
+        *      @OA\Response(response=200, description="Installation details retrieved successfully."),
         *      @OA\Response(response=403, description="You are not authorized."),
-        *      @OA\Response(response=422, description="Bad request"),
         *     )
     */
     public function show(string $id)
@@ -116,7 +114,7 @@ class InstallationController extends Controller
             $data = Installation::findOrFail($id);
             return response()->json([
                 'success' => true,
-                'message' => 'Installations show successfully with this id.',
+                'message' => 'Installation details retrieved successfully.',
                 'data' => $data,
             ]);
         }
@@ -130,27 +128,25 @@ class InstallationController extends Controller
     /**
         * @OA\Put(
         *      path="/api/installations/{id}",
-        *      operationId="Update Installation By Id",
+        *      operationId="updateInstallation",
         *      tags={"Installation"},
-        *      summary="Update Installation By Id",
-        *      description="Update installation here using id",
+        *      summary="Update a installation's details by ID",
+        *      description="Update a installation's details by ID",
         *      @OA\Parameter(
         *         name="id",
         *         in="path",
-        *         description="Update installation by id",
+        *         description="ID of the installation to update",
         *         required=true,
         *         @OA\Schema(
         *               type="integer",
         *         ),
         *      ),
         *      @OA\RequestBody(
-        *         @OA\JsonContent(),
         *         @OA\MediaType(
-        *            mediaType="multipart/form-data",
+        *            mediaType="application/json",
         *            @OA\Schema(
-        *               type="object",
         *               required={"name", "companyId"},
-        *               @OA\Property(property="name", type="text"),
+        *               @OA\Property(property="name", type="string"),
         *               @OA\Property(property="companyId", type="integer"),
         *            ),
         *        ),
@@ -158,7 +154,6 @@ class InstallationController extends Controller
         *      security={{"bearer":{}}},
         *      @OA\Response(response=200, description="Installation Updated Successfully"),
         *      @OA\Response(response=403, description="You are not authorized."),
-        *      @OA\Response(response=422, description="Bad request"),
         *     )
     */
     public function update(Request $request, string $id)
